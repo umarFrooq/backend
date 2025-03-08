@@ -1,0 +1,30 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}  # EC2 instance public IP or DNS
+          username: ${{ secrets.EC2_USER }}  # EC2 instance username (e.g., ubuntu)
+          key: ${{ secrets.EC2_SSH_KEY }}  # SSH private key
+          script: |
+            cd /home/ubuntu/backend
+            git pull origin main
+            npm install
+            pm2 restart backend
