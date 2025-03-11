@@ -24,7 +24,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/backend
+            cd /home/ubuntu/backend/backend
             git pull origin main
             npm install
             pm2 restart backend
