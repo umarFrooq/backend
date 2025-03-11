@@ -8,7 +8,7 @@ const getUsers = async (req, res) => {
     const result = await userService.getUsers(page, limit, search);
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch users" });
+    res.status(500).json({ error: err.message });
   }
 };
 
