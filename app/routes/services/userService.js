@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../../models/user");
 
 // Fetch users with pagination and filtering
 const getUsers = async (page = 1, limit = 3, search = "") => {
