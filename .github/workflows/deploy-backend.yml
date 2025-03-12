@@ -56,7 +56,7 @@ jobs:
       # Step 3: Build the Docker image
       - name: Build Docker image
         run: |
-          docker build -t umarfarooq892/backend-app:latest ./backend
+          docker build -t umarfarooq892/backend-app:latest ./applications/backend
 
       # Step 4: Push the Docker image to Docker Hub
       - name: Push Docker image
