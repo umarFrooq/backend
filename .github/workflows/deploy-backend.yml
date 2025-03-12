@@ -56,7 +56,7 @@ jobs:
       # Step 3: Build the Docker image
       - name: Build Docker image
         run: |
-          docker build -t umarfarooq892/backend-app:latest ./applications
+          docker build -t umarfarooq892/backend-app:latest ./backend
 
       # Step 4: Push the Docker image to Docker Hub
       - name: Push Docker image
@@ -72,7 +72,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Navigate to the applications folder
-            cd /home/ubuntu/applications
+            cd /home/ubuntu/applications/backend
 
             # Pull the latest Docker image
             docker pull umarfarooq892/backend-app:latest
