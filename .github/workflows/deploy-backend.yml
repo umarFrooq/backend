@@ -79,7 +79,7 @@ jobs:
 
             # Stop and remove the existing container (if running)
             docker stop backend-container || true
-            docker rm backend-container || true
+            # docker rm backend-container || true
 
             # Run the new container
             docker run -d \
