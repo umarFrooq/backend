@@ -19,5 +19,6 @@ RUN npm run build
 # Expose the port your frontend runs on
 EXPOSE 5000
 
+
 # Command to run the frontend application
 CMD ["node", "index.js"]
