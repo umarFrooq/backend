@@ -13,12 +13,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the React app (if using React)
-RUN npm run build
-
-# Expose the port your frontend runs on
+# Expose the port your backend runs on
 EXPOSE 5000
 
-
-# Command to run the frontend application
+# Command to run the backend application
 CMD ["node", "index.js"]
