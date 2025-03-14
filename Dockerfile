@@ -1,59 +1,23 @@
-name: Deploy Backend to EC2
+# Use an official Node.js runtime as the base image
+FROM node:16
 
-on:
-  push:
-    branches:
-      - main  # Trigger on push to the main branch
+# Set the working directory in the container
+WORKDIR /app
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-    steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
+# Install dependencies
+RUN npm install
 
-      # Step 2: Log in to Docker Hub (if you're using Docker Hub to store images)
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+# Copy the rest of the application code
+COPY . .
 
-      # Step 3: Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t umarfarooq892/backend-app:latest
+# Build the React app (if using React)
+RUN npm run build
 
-      # Step 4: Push the Docker image to Docker Hub
-      - name: Push Docker image
-        run: |
-          docker push umarfarooq892/backend-app:latest
+# Expose the port your frontend runs on
+EXPOSE 5000
 
-      # Step 5: Deploy to EC2 via SSH
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            # Navigate to the applications folder
-            cd /home/ubuntu/applications
-
-            # Pull the latest Docker image
-            docker pull umarfarooq892/backend-app:latest
-
-            # Stop and remove the existing container (if running)
-            docker stop backend-container || true
-            docker rm backend-container || true
-
-            # Run the new container
-            docker run -d \
-              --name backend-container \
-              -p 5000:5000 \
-              umarfarooq892/backend-app:latest
-
-            # Optional: Use PM2 to manage the Docker container
-            pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
+# Command to run the frontend application
+CMD ["node", "index.js"]
